@@ -7,7 +7,7 @@ export class ViewPost extends React.Component {
     }
 
     async getPost(id) {
-        const response = await fetch("posts/" + id);
+        const response = await fetch("api/posts/" + id);
         const post = await response.json();
         this.setState({ loading: false, post: post });
     }
