@@ -10,9 +10,12 @@ class NewPostForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            content: '',
-            author: ''
+            successful: false,
+            post: {
+                title: '',
+                content: '',
+                author: ''
+            }
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -20,22 +23,33 @@ class NewPostForm extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
+        let post = this.state.post;
+        post[event.target.name] = event.target.value;
+        this.setState({ post: post });
     }
 
     async handleSubmit(event) {
         event.preventDefault();
         await fetch("api/posts/new", {
             method: 'POST',
-            body: JSON.stringify(this.state),
+            body: JSON.stringify(this.state.post),
             headers: { 'Content-Type': 'application/json' },
         });
+        this.setState({ successful: true });
     }
 
     render() {
+        if (this.state.successful) {
+            return (
+                <div>
+                    <p>New post created successfully!</p>
+                    {JSON.stringify(this.state)}
+                </div>
+            );
+        }
         return (
             <div>
-                <form action="api/posts/new" method="POST" onSubmit={this.handleSubmit}>
+                <form method="POST" onSubmit={this.handleSubmit}>
                     <label>Title:</label>
                     <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
 
