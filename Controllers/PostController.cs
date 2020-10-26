@@ -7,8 +7,9 @@ using WebAppDemo.Models;
 
 namespace WebAppDemo.Controllers
 {
+    [Produces("application/json")]
     [ApiController]
-    [Route("posts")]
+    [Route("api/posts")]
     public class PostController : ControllerBase
     {
         private DataAccess _dataAccess;
@@ -37,13 +38,14 @@ namespace WebAppDemo.Controllers
             return post;
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("new")]
-        public async Task PutPost(string title, string content, string author)
+        public async Task<int> InsertPost([FromBody] Post post)
         {
             string sql = "INSERT INTO posts (title,content,author,posted) "
-                + $"VALUES ('{title}','{content}','{author}',datetime('now'))";
-            await _dataAccess.Set(sql);
+                + $"VALUES ('{post.title}','{post.content}','{post.author}',datetime('now'))";
+            int affected = await _dataAccess.Set(sql);
+            return affected;
         }
     }
 }

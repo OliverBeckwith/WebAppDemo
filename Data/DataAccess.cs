@@ -33,11 +33,12 @@ namespace WebAppDemo.Data
                 return row;
             }
         }
-        public async Task Set(string sql)
+        public async Task<int> Set(string sql)
         {
             using (IDbConnection connection = new SqliteConnection(_connString))
             {
-                await connection.ExecuteAsync(sql);
+                int affected = await connection.ExecuteAsync(sql);
+                return affected;
             }
         }
     }
