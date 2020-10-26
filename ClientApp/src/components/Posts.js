@@ -5,10 +5,11 @@ export class Posts extends React.Component {
     constructor(props) {
         super(props);
         this.state = { posts: [], loading: true };
+        this.getPosts();
     }
 
     async getPosts() {
-        const response = await fetch("posts");
+        const response = await fetch("api/posts");
         const posts = await response.json();
         this.setState({ loading: false, posts: posts });
     }
