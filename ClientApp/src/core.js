@@ -6,7 +6,7 @@ export async function checkAdmin()
         credentials: "include"
     });
     if (response.ok) {
-        return true;
+        return admin;
     }
     return false;
 }

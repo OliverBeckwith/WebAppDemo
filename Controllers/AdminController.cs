@@ -27,10 +27,10 @@ namespace WebAppDemo.Controllers
         {
             try {
                 if (this.User.Identity.IsAuthenticated)
-                    return Ok();
+                    return Ok(true);
             }
             catch(System.Exception e){}
-            return Unauthorized();
+            return Ok(false);
         }
 
         [HttpGet]
