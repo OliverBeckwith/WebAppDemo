@@ -39,28 +39,38 @@ class NewPostForm extends React.Component {
     }
 
     render() {
+        let body;
         if (this.state.successful) {
-            return (
+            body = (
                 <div>
                     <p>New post created successfully!</p>
                 </div>
             );
         }
+        else {
+            body = (
+                <div>
+                    <form method="POST" onSubmit={this.handleSubmit}>
+                        <label>Title:</label>
+                        <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
+
+                        <label>Content:</label>
+                        <input type="text" name="content" value={this.state.content} onChange={this.handleChange} />
+
+                        <label>Author:</label>
+                        <input type="text" name="author" value={this.state.author} onChange={this.handleChange} />
+
+                        <input type="submit" value="Submit" />
+                    </form>
+                </div>
+            );
+        }
+
         return (
             <div>
-                <form method="POST" onSubmit={this.handleSubmit}>
-                    <label>Title:</label>
-                    <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
-
-                    <label>Content:</label>
-                    <input type="text" name="content" value={this.state.content} onChange={this.handleChange} />
-
-                    <label>Author:</label>
-                    <input type="text" name="author" value={this.state.author} onChange={this.handleChange} />
-
-                    <input type="submit" value="Submit" />
-                </form>
+                <h2>New Post</h2>
+                {body}
             </div>
-        );
+        )
     }
 }

@@ -39,42 +39,52 @@ class EditPostForm extends React.Component {
     handleDelete(event) {
         fetch("api/admin/delete", {
             method: 'DELETE',
-            body: JSON.stringify(this.state.post),
+            body: JSON.stringify(this.state.post.id),
             headers: { 'Content-Type': 'application/json' },
         });
         this.setState({ deleted: true });
     }
 
     render() {
+        let body;
         if (this.state.deleted) {
-            return (
+            body = (
                 <div>
                     <p>Post deleted successfully!</p>
                 </div>
             );
         }
-        if (this.state.saved) {
-            return (
+        else if (this.state.saved) {
+            body = (
                 <div>
                     <p>Post saved successfully!</p>
                 </div>
             );
         }
+        else {
+            body = (
+                <div>
+                    <form method="POST" onSubmit={this.handleSubmit}>
+                        <label>Title:</label>
+                        <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
+
+                        <label>Content:</label>
+                        <input type="text" name="content" value={this.state.content} onChange={this.handleChange} />
+
+                        <label>Author:</label>
+                        <input type="text" name="author" value={this.state.author} onChange={this.handleChange} />
+
+                        <input type="submit" value="Submit" />
+                    </form>
+                    <button>Delete</button>
+                </div>
+            );
+        }
+
         return (
             <div>
-                <form method="POST" onSubmit={this.handleSubmit}>
-                    <label>Title:</label>
-                    <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
-
-                    <label>Content:</label>
-                    <input type="text" name="content" value={this.state.content} onChange={this.handleChange} />
-
-                    <label>Author:</label>
-                    <input type="text" name="author" value={this.state.author} onChange={this.handleChange} />
-
-                    <input type="submit" value="Submit" />
-                </form>
-                <button>Delete</button>
+                <h2>Edit Post</h2>
+                {body}
             </div>
         );
     }

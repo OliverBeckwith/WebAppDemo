@@ -13,15 +13,16 @@ export class ViewPost extends React.Component {
     }
 
     render() {
+        let body;
         if (this.state.loading) {
-            return (
+            body = (
                 <div>
                     <p>Loading</p>
                 </div>
             );
         }
         else {
-            return (
+            body = (
                 <div>
                     <h1>{this.state.post.title}</h1>
                     <h2>Posted by: {this.state.post.author}</h2>
