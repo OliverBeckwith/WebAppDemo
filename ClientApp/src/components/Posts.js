@@ -14,6 +14,12 @@ export class Posts extends React.Component {
         this.setState({ loading: false, posts: posts });
     }
 
+    truncate(text, length) {
+        return text.length > length
+            ? text.substring(0, length) + "..."
+            : text;
+    }
+
     render() {
 
         let body;
@@ -28,6 +34,7 @@ export class Posts extends React.Component {
                 <table className='table table-striped'>
                     <thead>
                         <tr>
+                            <th>Time Posted</th>
                             <th>Title</th>
                             <th>Author</th>
                             <th>Content</th>
@@ -36,10 +43,10 @@ export class Posts extends React.Component {
                     <tbody>
                         {this.state.posts.map(post =>
                             <tr key={post.id}>
-                                <td>{post.posted}</td>
-                                <td>{post.title}</td>
-                                <td>{post.author}</td>
-                                <td>{post.content}</td>
+                                <td>{new Date(post.posted).toLocaleString()}</td>
+                                <td>{this.truncate(post.title,25)}</td>
+                                <td>{this.truncate(post.author,25)}</td>
+                                <td>{this.truncate(post.content,25)}</td>
                             </tr>
                         )}
                     </tbody>
