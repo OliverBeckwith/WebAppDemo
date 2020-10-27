@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 
-export class NewPost extends React.Component {
+export class EditPost extends React.Component {
     render() {
-        return (<NewPostForm />)
+        return (<EditPostForm />)
     }
 }
 
-class NewPostForm extends React.Component {
+class EditPostForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            successful: false,
-            post: {
-                title: '',
-                content: '',
-                author: ''
-            }
+            saved: false,
+            deleted: false,
+            post: props.post
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleChange(event) {
@@ -30,19 +28,35 @@ class NewPostForm extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        await fetch("api/posts/new", {
-            method: 'POST',
+        await fetch("api/admin/update", {
+            method: 'PUT',
             body: JSON.stringify(this.state.post),
             headers: { 'Content-Type': 'application/json' },
         });
-        this.setState({ successful: true });
+        this.setState({ saved: true });
+    }
+
+    handleDelete(event) {
+        fetch("api/admin/delete", {
+            method: 'DELETE',
+            body: JSON.stringify(this.state.post),
+            headers: { 'Content-Type': 'application/json' },
+        });
+        this.setState({ deleted: true });
     }
 
     render() {
-        if (this.state.successful) {
+        if (this.state.deleted) {
             return (
                 <div>
-                    <p>New post created successfully!</p>
+                    <p>Post deleted successfully!</p>
+                </div>
+            );
+        }
+        if (this.state.saved) {
+            return (
+                <div>
+                    <p>Post saved successfully!</p>
                 </div>
             );
         }
@@ -60,6 +74,7 @@ class NewPostForm extends React.Component {
 
                     <input type="submit" value="Submit" />
                 </form>
+                <button>Delete</button>
             </div>
         );
     }

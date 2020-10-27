@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WebAppDemo.Data;
 using System.Threading.Tasks;
+using WebAppDemo.Models;
 
 namespace WebAppDemo.Controllers
 {
     [Authorize]
-    [Route("admin")]
+    [Route("api/admin")]
 
     public class AdminController : ControllerBase
     {
@@ -24,7 +25,7 @@ namespace WebAppDemo.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<string> GetHashSalt(int id)
+        public async Task<string> GetUserSalt(int id)
         {
             string sql = $"SELECT salt FROM admins WHERE id=={id} LIMIT 1";
             string salt = await _dataAccess.GetFirstOrDefault<string>(sql);
@@ -47,10 +48,18 @@ namespace WebAppDemo.Controllers
             return SignIn(principal, CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
-        [HttpGet]
-        public string GetTest()
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdatePost(Post post)
         {
-            return "This is working";
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("delete")]
+        public async Task<IActionResult> DeletePost(Post post)
+        {
+            return Ok();
         }
     }
 }
