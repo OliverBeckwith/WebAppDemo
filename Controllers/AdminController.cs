@@ -15,12 +15,9 @@ namespace WebAppDemo.Controllers
     public class AdminController : ControllerBase
     {
         private DataAccess _dataAccess;
-        public AdminController()
+        public AdminController(DataAccess dataAccess)
         {
-            //Placeholder
-            string connString = "Data Source=webappdemo.db";
-
-            _dataAccess = new DataAccess(connString);
+            _dataAccess = dataAccess;
         }
 
         [HttpGet]

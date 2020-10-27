@@ -13,12 +13,9 @@ namespace WebAppDemo.Controllers
     public class PostController : ControllerBase
     {
         private DataAccess _dataAccess;
-        public PostController()
+        public PostController(DataAccess dataAccess)
         {
-            //Placeholder
-            string connString = "Data Source=webappdemo.db";
-
-            _dataAccess = new DataAccess(connString);
+            _dataAccess = dataAccess;
         }
 
         [HttpGet]
