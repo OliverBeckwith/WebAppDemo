@@ -9,6 +9,7 @@ import { Login } from './components/admin/Login';
 
 import './custom.css'
 import { EditPost } from './components/admin/EditPost';
+import { CreateAdmin } from './components/admin/CreateAdmin';
 import { checkAdmin } from "./core";
 
 export default class App extends Component {
@@ -58,6 +59,7 @@ export default class App extends Component {
             <Route path='/list' component={Posts} />
             <Route path='/new' component={NewPost} />
             <Route path="/login" component={Login} />
+            <Route path="/create" component={CreateAdmin} />
           </Layout>
         </Route>
       </Switch>

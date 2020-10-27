@@ -22,7 +22,9 @@ namespace WebAppDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+                    config => { config.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None; });
             services.AddAuthorization();
 
             services.AddControllersWithViews();
@@ -58,7 +60,7 @@ namespace WebAppDemo
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

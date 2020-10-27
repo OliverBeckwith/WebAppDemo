@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { hash_sha512 } from "../../core";
 
 export class Login extends React.Component {
 
@@ -20,11 +21,16 @@ export class Login extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        const response = await fetch("api/admin/salt/" + this.state.id, {
+        let response = await fetch("api/admin/salt/" + this.state.id, {
             method: 'GET',
         });
         const salt = await response.text();
-        
+        const hashed = hash_sha512(this.state.password, salt);
+        response = await fetch("api/admin/login/"+this.state.id, {
+            method: 'POST',
+            body: JSON.stringify(hashed),
+            headers: { 'Content-Type': 'application/json' },
+        });
     }
 
     render() {

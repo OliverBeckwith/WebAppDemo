@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using WebAppDemo.Data;
 using System.Threading.Tasks;
 using WebAppDemo.Models;
+using Microsoft.AspNetCore.Authentication;
 
 namespace WebAppDemo.Controllers
 {
@@ -14,6 +15,11 @@ namespace WebAppDemo.Controllers
 
     public class AdminController : ControllerBase
     {
+        public class PasswordData{
+            public string hashed_password {get;set;}
+            public string salt {get;set;}
+        }
+
         private DataAccess _dataAccess;
         public AdminController(DataAccess dataAccess)
         {
@@ -45,23 +51,48 @@ namespace WebAppDemo.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("login")]
-        public async Task<IActionResult> LoginPost(int id, string hashedpassword)
+        [Route("login/{id}")]
+        public async Task<IActionResult> LoginPost(int id, [FromBody]string hashedpassword)
         {
-            string sql = $"SELECT COUNT(id) FROM admins WHERE id=={id} AND `password`=={hashedpassword} LIMIT 1";
+            string sql = $"SELECT COUNT(id) FROM admins WHERE id=={id} AND `password`=='{hashedpassword}' LIMIT 1";
             bool correct = await _dataAccess.GetFirstOrDefault<bool>(sql);
 
             if (!correct)
-                return this.Problem("Invalid id and password combination.");
+                return Problem("Invalid id and password combination.");
 
             ClaimsIdentity identity = new ClaimsIdentity(new[] { new Claim("id", id.ToString()) });
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
-            return SignIn(principal, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(identity));
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]//For now
+        [Route("createadmin")]
+        public async Task<IActionResult> CreateAdmin([FromBody] PasswordData data)
+        {
+            if(data.hashed_password==null || data.salt==null)
+                return Problem();
+
+            string sql = "INSERT INTO admins (`password`, salt) "
+                + $"VALUES ('{data.hashed_password}','{data.salt}')";
+            int affected = await _dataAccess.Set(sql);
+            if(affected<=0)
+                return Problem();
+
+            sql = "SELECT id FROM admins "
+                + $"WHERE `password`=='{data.hashed_password}' "
+                + $"AND salt=='{data.salt}' LIMIT 1";
+            int id = await _dataAccess.GetFirstOrDefault<int>(sql);
+            return Ok(id);
         }
 
         [HttpPut]
-        [Route("update")]
+        [Route("post/update")]
         public async Task<IActionResult> UpdatePost(Post post)
         {
             string sql = "UPDATE posts set "
@@ -72,7 +103,7 @@ namespace WebAppDemo.Controllers
         }
 
         [HttpDelete]
-        [Route("delete")]
+        [Route("post/delete")]
         public async Task<IActionResult> DeletePost(int id)
         {
             string sql = $"DELETE FROM posts WHERE id=={id}";
