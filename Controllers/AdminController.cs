@@ -54,7 +54,7 @@ namespace WebAppDemo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("login/{id}")]
-        public async Task<IActionResult> LoginPost(int id, [FromBody] string hashedpassword)
+        public async Task<IActionResult> Login(int id, [FromBody] string hashedpassword)
         {
             string sql = $"SELECT COUNT(id) FROM admins WHERE id=={id} AND `password`=='{hashedpassword}' LIMIT 1";
             bool correct = await _dataAccess.GetFirstOrDefault<bool>(sql);
@@ -73,6 +73,13 @@ namespace WebAppDemo.Controllers
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
             return SignIn(principal, CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        [HttpPost]
+        [Route("logout")]
+        public IActionResult Logout()
+        {
+            return this.SignOut(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         [HttpPost]

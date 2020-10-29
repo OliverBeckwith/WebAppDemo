@@ -6,6 +6,7 @@ import { Posts } from './components/Posts';
 import { NewPost } from './components/NewPost';
 import { AdminHome } from './components/admin/AdminHome';
 import { Login } from './components/admin/Login';
+import { Loader } from './components/Loader';
 
 import './custom.css'
 import { EditPost } from './components/admin/EditPost';
@@ -24,7 +25,7 @@ export default class App extends Component {
 
   async getAdmin() {
     const isAdmin = await checkAdmin();
-    console.log("Admin: "+isAdmin);
+    console.log("Admin: " + isAdmin);
     this.setState({ loading: false, admin: isAdmin });
   }
 
@@ -37,15 +38,18 @@ export default class App extends Component {
 
     return (
       <Switch>
-        <Route path="/admin" render={() => {
+        <Route path="/admin" render={({ match: { url } }) => {
           if (!this.state.admin) {
             return <Redirect to="/login" />
           }
           else {
             return (
               <Layout subtitle="Admin">
-                <Route exact path="/" component={AdminHome} />
-                <Route path='/edit' component={EditPost} />
+                <Route exact path={`${url}/`} component={AdminHome} />
+                <Route path={`${url}/edit/:id`} component={EditPost} />
+                <Route path={`${url}/logout`} render={() => {
+                  return <Loader toAwait={() => { fetch('/api/admin/logout', { method: "POST", credentials: "include" }) }} onLoadGoTo="/" />
+                }} />
               </Layout>
             );
           }
