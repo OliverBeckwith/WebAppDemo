@@ -63,8 +63,7 @@ export default class App extends Component {
         <Route path="/">
           <Layout subtitle="Public">
             <Route exact path="/" component={Home} />
-            <Route path='/list' component={Posts} />
-            <Route path='/new' component={NewPost} />
+            <Route path='/posts' component={Posts} />
             <Route path='/post/:id' component={ViewPost} />
             <Route path="/login" component={Login} />
           </Layout>
