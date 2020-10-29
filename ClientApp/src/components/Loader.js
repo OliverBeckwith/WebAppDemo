@@ -1,31 +1,17 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router'
 
-export class Loader extends Component {
-    static displayName = Loader.name;
+export async function Loader(props) {
 
-    constructor(props) {
-        super(props);
+    const history = useHistory();
 
-        this.state = {loading:true,onLoadGoTo:props.onLoadGoTo}
-
-        if (props.toAwait !== undefined) {
-            this.load(props.toAwait);
-        }
+    if (props.toAwait) {
+        await props.toAwait();
+    }
+    if (props.refresh) {
+        history.go();
     }
 
-    async load(toAwait) {
-        console.log("Loading")
-        await toAwait();
-        this.setState({loading:false});
-        console.log("Loaded")
-    }
-
-    render() {
-        if (this.state.loading) {
-            return null;
-        }
-
-        return <Redirect to={this.state.onLoadGoTo} />
-    }
+    return <Redirect to={this.state.onLoadGoTo} />
 }

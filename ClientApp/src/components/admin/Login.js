@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Loader } from '../Loader';
+import { Redirect } from 'react-router-dom';
 import { hash_sha512 } from "../../core";
 
 export class Login extends React.Component {
@@ -8,7 +10,8 @@ export class Login extends React.Component {
 
         this.state = {
             id: '',
-            password: ''
+            password: '',
+            success: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -26,25 +29,37 @@ export class Login extends React.Component {
         });
         const salt = await response.text();
         const hashed = hash_sha512(this.state.password, salt);
-        response = await fetch("api/admin/login/"+this.state.id, {
+        response = await fetch("api/admin/login/" + this.state.id, {
             method: 'POST',
             body: JSON.stringify(hashed),
             headers: { 'Content-Type': 'application/json' },
         });
+
+        if (response.ok) {
+            this.setState({ success: true });
+        }
     }
 
     render() {
+        if (this.state.success) {
+            return <Loader onLoadGoto="/admin" refresh={true}/>
+        }
+
+        let body = (
+            <form method="POST" onSubmit={this.handleSubmit}>
+                <label>ID: </label>
+                <input name="id" value={this.state.id} onChange={this.handleChange} />
+
+                <label>Password: </label>
+                <input name="password" type="password" value={this.state.password} onChange={this.handleChange} />
+                <input type="submit" value="Login" />
+            </form>
+        );
+
         return (
             <div>
                 <h2>Login</h2>
-                <form method="POST" onSubmit={this.handleSubmit}>
-                    <label>ID: </label>
-                    <input name="id" value={this.state.id} onChange={this.handleChange} />
-
-                    <label>Password: </label>
-                    <input name="password" type="password" value={this.state.password} onChange={this.handleChange} />
-                    <input type="submit" value="Login" />
-                </form>
+                {body}
             </div>
         );
     }

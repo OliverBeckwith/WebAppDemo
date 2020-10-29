@@ -8,7 +8,7 @@ export class Layout extends Component {
   render () {
     return (
       <div>
-        <NavMenu subtitle={this.props.subtitle}/>
+        <NavMenu admin={this.props.admin} subtitle={this.props.subtitle}/>
         <Container>
           {this.props.children}
         </Container>

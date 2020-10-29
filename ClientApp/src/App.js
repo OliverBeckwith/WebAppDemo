@@ -44,7 +44,7 @@ export default class App extends Component {
           }
           else {
             return (
-              <Layout subtitle="Admin">
+              <Layout subtitle="Admin" admin={this.state.admin}>
                 <Route exact path={`${url}/`} component={AdminHome} />
                 <Route path={`${url}/createadmin`} component={CreateAdmin} />
                 <Route path={`${url}/new`} component={NewPost} />
@@ -52,7 +52,7 @@ export default class App extends Component {
                 <Route path={`${url}/logout`} render={() => {
                   return <Loader
                     toAwait={() => { fetch('/api/admin/logout', { method: "POST", credentials: "include" }) }}
-                    onLoadGoTo="/"
+                    onLoadGoTo="/" refresh={true}
                   />
                 }} />
               </Layout>
@@ -61,11 +61,19 @@ export default class App extends Component {
         }} />
 
         <Route path="/">
-          <Layout subtitle="Public">
+          <Layout subtitle="Public" admin={this.state.admin}>
             <Route exact path="/" component={Home} />
             <Route path='/posts' component={Posts} />
             <Route path='/post/:id' component={ViewPost} />
-            <Route path="/login" component={Login} />
+            <Route path="/login" render={() => {
+              if(this.state.admin)
+              {
+                return <Redirect to="/admin" />
+              }
+              else{
+                return <Login />
+              }
+            }}/>
           </Layout>
         </Route>
       </Switch>
