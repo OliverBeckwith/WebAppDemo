@@ -24,16 +24,14 @@ export default class App extends Component {
 
   async getAdmin() {
     const isAdmin = await checkAdmin();
+    console.log("Admin: "+isAdmin);
     this.setState({ loading: false, admin: isAdmin });
   }
 
   render() {
-
     if (this.state.loading === true) {
       return (
-        <Layout>
-          <h2>Loading</h2>
-        </Layout>
+        null
       );
     }
 

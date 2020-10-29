@@ -5,8 +5,8 @@ export async function checkAdmin() {
         method: "GET",
         credentials: "include"
     });
-    let admin;
     if (response.ok) {
+        let admin = response.json();
         return admin;
     }
     return false;

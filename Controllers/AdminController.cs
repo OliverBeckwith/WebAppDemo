@@ -15,9 +15,10 @@ namespace WebAppDemo.Controllers
 
     public class AdminController : ControllerBase
     {
-        public class PasswordData{
-            public string hashed_password {get;set;}
-            public string salt {get;set;}
+        public class PasswordData
+        {
+            public string hashed_password { get; set; }
+            public string salt { get; set; }
         }
 
         private DataAccess _dataAccess;
@@ -31,11 +32,12 @@ namespace WebAppDemo.Controllers
         [Route("logincheck")]
         public IActionResult IsLoggedIn()
         {
-            try {
+            try
+            {
                 if (this.User.Identity.IsAuthenticated)
                     return Ok(true);
             }
-            catch(System.Exception e){}
+            catch (System.Exception e) { }
             return Ok(false);
         }
 
@@ -52,7 +54,7 @@ namespace WebAppDemo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("login/{id}")]
-        public async Task<IActionResult> LoginPost(int id, [FromBody]string hashedpassword)
+        public async Task<IActionResult> LoginPost(int id, [FromBody] string hashedpassword)
         {
             string sql = $"SELECT COUNT(id) FROM admins WHERE id=={id} AND `password`=='{hashedpassword}' LIMIT 1";
             bool correct = await _dataAccess.GetFirstOrDefault<bool>(sql);
@@ -60,14 +62,17 @@ namespace WebAppDemo.Controllers
             if (!correct)
                 return Problem("Invalid id and password combination.");
 
-            ClaimsIdentity identity = new ClaimsIdentity(new[] { new Claim("id", id.ToString()) });
+            var claims = new[] {
+                new Claim("id", id.ToString())
+            };
+
+            ClaimsIdentity identity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(identity));
-
-            return Ok();
+            return SignIn(principal, CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         [HttpPost]
@@ -75,13 +80,13 @@ namespace WebAppDemo.Controllers
         [Route("createadmin")]
         public async Task<IActionResult> CreateAdmin([FromBody] PasswordData data)
         {
-            if(data.hashed_password==null || data.salt==null)
+            if (data.hashed_password == null || data.salt == null)
                 return Problem();
 
             string sql = "INSERT INTO admins (`password`, salt) "
                 + $"VALUES ('{data.hashed_password}','{data.salt}')";
             int affected = await _dataAccess.Set(sql);
-            if(affected<=0)
+            if (affected <= 0)
                 return Problem();
 
             sql = "SELECT id FROM admins "
