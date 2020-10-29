@@ -83,7 +83,6 @@ namespace WebAppDemo.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]//For now
         [Route("createadmin")]
         public async Task<IActionResult> CreateAdmin([FromBody] PasswordData data)
         {
