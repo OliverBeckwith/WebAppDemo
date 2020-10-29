@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 
 export class NewPost extends React.Component {
-    render() {
-        return (<NewPostForm />)
-    }
-}
-
-class NewPostForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
