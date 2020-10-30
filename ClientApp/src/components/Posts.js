@@ -40,7 +40,7 @@ export class Posts extends React.Component {
         }
         else {
             let posts;
-            if(posts && posts.length>0)
+            if(this.state.posts && this.state.posts.length>0)
             {
                 posts = this.state.posts.map(post =>
                     <tr key={post.id}>
