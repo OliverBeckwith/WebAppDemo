@@ -39,6 +39,29 @@ export class Posts extends React.Component {
             );
         }
         else {
+            let posts;
+            if(posts && posts.length>0)
+            {
+                posts = this.state.posts.map(post =>
+                    <tr key={post.id}>
+                        <td>{new Date(post.posted).toLocaleString()}</td>
+                        <td>{this.truncate(post.title, 25)}</td>
+                        <td>{this.truncate(post.author, 25)}</td>
+                        <td>{this.truncate(post.content, 25)}</td>
+                        {this.state.admin
+                            ? <td><a href={"/admin/edit/" + post.id}>Edit</a></td>
+                            : ""
+                        }
+                    </tr>
+                );
+            }
+            else
+            {
+                posts = (
+                    <p>No Posts to show</p>
+                );
+            }
+
             body = (
                 <div>
                     <table className='table table-striped'>
@@ -51,18 +74,7 @@ export class Posts extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.posts.map(post =>
-                                <tr key={post.id}>
-                                    <td>{new Date(post.posted).toLocaleString()}</td>
-                                    <td>{this.truncate(post.title, 25)}</td>
-                                    <td>{this.truncate(post.author, 25)}</td>
-                                    <td>{this.truncate(post.content, 25)}</td>
-                                    {this.state.admin
-                                        ? <td><a href={"/admin/edit/" + post.id}>Edit</a></td>
-                                        : ""
-                                    }
-                                </tr>
-                            )}
+                            {posts}
                         </tbody>
                     </table>
                 </div>
