@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { useParams } from "react-router-dom";
 import { checkAdmin, loadPost } from "../core";
+import { Col, Row } from 'reactstrap';
 
 export function ViewPost() {
     let { id } = useParams();
@@ -63,13 +64,18 @@ class Post extends React.Component {
             console.log(this.state.post);
             return (
                 <div>
-                    <h2>{this.state.post.title}</h2>
-                    <em>Posted at: {new Date(this.state.post.posted).toLocaleString()} 
-                        {this.state.post.modified != this.state.post.posted
-                            ? ` - Last modified at: ${new Date(this.state.post.modified).toLocaleString()}`
-                            : null}
-                    </em>
-                    <p>{this.state.post.content}</p>
+                    <h2 className="post-title">{this.state.post.title}</h2>
+                    <Row className="post-date">
+                        <Col sm="auto"><em>
+                            Posted at: {new Date(this.state.post.posted).toLocaleString()}
+                        </em></Col>
+                        <Col sm="auto"><em>
+                            {this.state.post.modified != this.state.post.posted
+                                ? `Last modified at: ${new Date(this.state.post.modified).toLocaleString()}`
+                                : null}
+                        </em></Col>
+                    </Row>
+                    <p className="post-content">{this.state.post.content}</p>
                     {this.state.admin
                         ? <a href={`/admin/post/edit/${this.props.id}`}>Edit this post</a>
                         : ""
@@ -93,13 +99,26 @@ class Post extends React.Component {
                 existing = (
                     <div>
                         {this.state.comments.map(comment =>
-                            <div key={comment.id}>
-                                <em>At {new Date(comment.commented).toLocaleString()}, <strong>{comment.author}</strong> said:</em>
-                                <p>{comment.content}</p>
-                                {this.state.admin
-                                    ? <a href='#' onClick={(e) => { e.preventDefault(); this.deleteComment(comment.id) }}>Delete</a>
-                                    : null
-                                }
+                            <div>
+                                <Row key={comment.id} style={{ marginBottom: "2px", marginTop: "2px" }}>
+
+                                    <Col sm="2" className="comment-author">
+                                        <strong>{comment.author}</strong>
+                                    </Col>
+                                    <Col sm="7" className="comment-content">
+                                        {comment.content}
+                                    </Col>
+                                    <Col xs="6" sm="2" className="comment-date">
+                                        <em>{new Date(comment.commented).toLocaleString().replace(",", "")}</em>
+                                    </Col>
+                                    {this.state.admin
+                                        ? <Col xs="6" sm="1" style={{ textAlign: "end" }}><a href='#' onClick={(e) => { e.preventDefault(); this.deleteComment(comment.id) }}>
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a></Col>
+                                        : null
+                                    }
+                                </Row>
+                                <hr />
                             </div>
                         )}
                     </div>
@@ -118,13 +137,22 @@ class Post extends React.Component {
                     {existing}
                     <h4>Leave a Comment</h4>
                     <form method="post" onSubmit={this.handleCommentSubmit}>
-                        <label>Display Name: </label>
-                        <input name="author" value={this.state.newcomment.author} onChange={this.handleCommentChange} />
-
-                        <label>Comment: </label>
-                        <input name="content" value={this.state.newcomment.content} onChange={this.handleCommentChange} />
-
-                        <input type="submit" value="Submit" />
+                        <Row>
+                            <Col sm="2">
+                                <label>Display Name: </label>
+                            </Col>
+                            <Col sm="10">
+                                <input name="author" value={this.state.newcomment.author} onChange={this.handleCommentChange} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm="2" >
+                                <label>Comment: </label></Col>
+                            <Col sm="10">
+                                <input name="content" value={this.state.newcomment.content} onChange={this.handleCommentChange} />
+                            </Col>
+                        </Row>
+                        <Row><Col><input type="submit" value="Submit" /></Col></Row>
                     </form>
                 </div>
 
@@ -134,7 +162,9 @@ class Post extends React.Component {
 
     handleCommentChange(e) {
         let newcomment = this.state.newcomment;
-        newcomment[e.target.name] = e.target.value;
+        newcomment[e.target.name] = e.target.name == "author" && e.target.value.length > 20
+            ? e.target.value.substring(0, 20)
+            : e.target.value;
         this.setState({ newcomment: newcomment });
     }
 
@@ -167,6 +197,7 @@ class Post extends React.Component {
         return (
             <div>
                 {postbody}
+                <hr />
                 {commentsbody}
             </div>
         );

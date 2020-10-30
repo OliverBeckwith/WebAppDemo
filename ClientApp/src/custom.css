@@ -1,6 +1,14 @@
 /* Provide sufficient contrast against white background */
+html, body {
+  font-family: 'Poppins', sans-serif;
+}
+
 a {
   color: #0366d6;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 400;
 }
 
 code {
@@ -11,4 +19,41 @@ code {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+.post-title {
+}
+
+.post-date {
+  color: grey;
+  font-size: x-small;
+}
+
+.comment-content {
+  align-self: center;
+  border-radius: 4px 16px 16px 16px;
+  background-color: gainsboro;
+  font-size: small;
+}
+
+.comment-author {
+  align-self: baseline;
+  text-align: right;
+  font-size: small;
+}
+@media(max-width:576px) {
+  .comment-author {
+    text-align: left;
+  }
+  .comment-content {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+}
+
+.comment-date {
+  color: grey;
+  font-size: x-small;
+  text-align: center;
+  align-self: center;
 }
