@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { useParams } from 'react-router-dom';
+import { loadPost } from '../../core';
 
-export class EditPost extends React.Component {
-    render() {
-        return (<EditPostForm />)
+export function EditPost(props) {
+
+    let { id } = useParams();
+    if (id) {
+        return <EditPostForm id={id} />
     }
 }
 
@@ -12,12 +16,23 @@ class EditPostForm extends React.Component {
         this.state = {
             saved: false,
             deleted: false,
-            post: props.post
+            post: {
+                title: '',
+                content: ''
+            }
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+
+        this.getPost(props.id)
+    }
+
+    async getPost(id)
+    {
+        const post = await loadPost(id);
+        this.setState({post: post});
     }
 
     handleChange(event) {
@@ -66,13 +81,10 @@ class EditPostForm extends React.Component {
                 <div>
                     <form method="POST" onSubmit={this.handleSubmit}>
                         <label>Title:</label>
-                        <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
+                        <input type="text" name="title" value={this.state.post.title} onChange={this.handleChange} />
 
                         <label>Content:</label>
-                        <input type="text" name="content" value={this.state.content} onChange={this.handleChange} />
-
-                        <label>Author:</label>
-                        <input type="text" name="author" value={this.state.author} onChange={this.handleChange} />
+                        <input type="text" name="content" value={this.state.post.content} onChange={this.handleChange} />
 
                         <input type="submit" value="Submit" />
                     </form>

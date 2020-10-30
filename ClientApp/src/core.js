@@ -1,5 +1,17 @@
 var crypto = require('crypto');
 
+export async function loadPosts() {
+    const response = await fetch("api/posts");
+    const posts = await response.json();
+    return posts;
+}
+
+export async function loadPost(id) {
+    const response = await fetch("api/posts/"+id);
+    const post = await response.json();
+    return post;
+}
+
 export async function checkAdmin() {
     const response = await fetch("api/admin/logincheck", {
         method: "GET",
