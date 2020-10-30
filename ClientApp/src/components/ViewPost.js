@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { useParams } from "react-router-dom";
-import { checkAdmin } from "../core";
+import { checkAdmin, loadPost } from "../core";
 
 export function ViewPost() {
     let { id } = useParams();
@@ -30,13 +30,12 @@ class Post extends React.Component {
         this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
         this.deleteComment = this.deleteComment.bind(this);
 
-        this.loadPost(props.id);
+        this.getPost(props.id);
         this.getAdmin();
     }
 
-    async loadPost(id) {
-        const response = await fetch("api/posts/" + id);
-        const post = await response.json();
+    async getPost(id) {
+        const post = await loadPost(id)
         this.setState({ loadingpost: false, post: post });
         this.loadComments(id);
     }
@@ -61,10 +60,15 @@ class Post extends React.Component {
             );
         }
         else {
+            console.log(this.state.post);
             return (
                 <div>
                     <h2>{this.state.post.title}</h2>
-                    <em>Posted at: {new Date(this.state.post.posted).toLocaleString()}</em>
+                    <em>Posted at: {new Date(this.state.post.posted).toLocaleString()} 
+                        {this.state.post.modified != this.state.post.posted
+                            ? ` - Last modified at: ${new Date(this.state.post.modified).toLocaleString()}`
+                            : null}
+                    </em>
                     <p>{this.state.post.content}</p>
                     {this.state.admin
                         ? <a href={`/admin/post/edit/${this.props.id}`}>Edit this post</a>
@@ -89,11 +93,11 @@ class Post extends React.Component {
                 existing = (
                     <div>
                         {this.state.comments.map(comment =>
-                            <div>
-                                <strong>At {new Date(comment.commented).toLocaleString()}, {comment.author} said:</strong>
+                            <div key={comment.id}>
+                                <em>At {new Date(comment.commented).toLocaleString()}, <strong>{comment.author}</strong> said:</em>
                                 <p>{comment.content}</p>
                                 {this.state.admin
-                                    ? <a href='#' onClick={(e) => {e.preventDefault();this.deleteComment(comment.id)}}>Delete</a>
+                                    ? <a href='#' onClick={(e) => { e.preventDefault(); this.deleteComment(comment.id) }}>Delete</a>
                                     : null
                                 }
                             </div>
