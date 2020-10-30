@@ -47,7 +47,7 @@ export default class App extends Component {
               <Layout subtitle="Admin" admin={this.state.admin}>
                 <Route exact path={`${url}/`} component={AdminHome} />
                 <Route path={`${url}/createadmin`} component={CreateAdmin} />
-                <Route path={`${url}/new`} component={NewPost} />
+                <Route path={`${url}/post/new`} component={NewPost} />
                 <Route path={`${url}/edit/:id`} component={EditPost} />
                 <Route path={`${url}/logout`} render={() => {
                   return <Loader

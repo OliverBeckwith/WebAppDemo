@@ -24,23 +24,20 @@ export class NavMenu extends Component {
   render() {
     let brandText = "WebAppDemo"
       + (this.props.subtitle == undefined ? "" : " - " + this.props.subtitle);
-
+    let homeUrl = this.props.admin ? "/admin" : "/";
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
-            <NavbarBrand tag={Link} to="/">{brandText}</NavbarBrand>
+            <NavbarBrand tag={Link} to={homeUrl}>{brandText}</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to={this.props.admin ? "/admin" : "/"}>Home</NavLink>
+                  <NavLink tag={Link} className="text-dark" to={homeUrl}>Home</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/list">Posts</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/new">Create a post</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/posts">Posts</NavLink>
                 </NavItem>
                 <NavItem>
                   {this.props.admin
