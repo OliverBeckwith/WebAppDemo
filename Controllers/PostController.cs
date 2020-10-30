@@ -39,7 +39,7 @@ namespace WebAppDemo.Controllers
         [Route("{post_id}/comments")]
         public async Task<Comment[]> GetComments(int post_id)
         {
-            string sql = $"SELECT * FROM comments WHERE post_id=={post_id} ORDER BY commented DESC";
+            string sql = $"SELECT * FROM comments WHERE post_id=={post_id} ORDER BY commented ASC";
             var comments = await _dataAccess.Get<Comment>(sql);
             return comments.ToArray();
         }

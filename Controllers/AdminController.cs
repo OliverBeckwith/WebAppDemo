@@ -103,7 +103,7 @@ namespace WebAppDemo.Controllers
         }
 
         [HttpPut]
-        [Route("post/update")]
+        [Route("post")]
         public async Task<IActionResult> UpdatePost(Post post)
         {
             string sql = "UPDATE posts set "
@@ -114,10 +114,19 @@ namespace WebAppDemo.Controllers
         }
 
         [HttpDelete]
-        [Route("post/delete")]
+        [Route("post")]
         public async Task<IActionResult> DeletePost(int id)
         {
             string sql = $"DELETE FROM posts WHERE id=={id}";
+            int affected = await _dataAccess.Set(sql);
+            return Ok(affected);
+        }
+
+        [HttpDelete]
+        [Route("comment")] 
+        public async Task<IActionResult> DeleteComment([FromBody]int id)
+        {
+            string sql = $"DELETE FROM comments WHERE id=={id}";
             int affected = await _dataAccess.Set(sql);
             return Ok(affected);
         }

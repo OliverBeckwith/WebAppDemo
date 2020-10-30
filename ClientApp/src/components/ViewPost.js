@@ -28,6 +28,7 @@ class Post extends React.Component {
 
         this.handleCommentChange = this.handleCommentChange.bind(this);
         this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+        this.deleteComment = this.deleteComment.bind(this);
 
         this.loadPost(props.id);
         this.getAdmin();
@@ -91,6 +92,10 @@ class Post extends React.Component {
                             <div>
                                 <strong>At {new Date(comment.commented).toLocaleString()}, {comment.author} said:</strong>
                                 <p>{comment.content}</p>
+                                {this.state.admin
+                                    ? <a href='#' onClick={(e) => {e.preventDefault();this.deleteComment(comment.id)}}>Delete</a>
+                                    : null
+                                }
                             </div>
                         )}
                     </div>
@@ -137,7 +142,17 @@ class Post extends React.Component {
             headers: { 'Content-Type': 'application/json' },
         });
         console.log(response);
-        this.setState({newcomment: {content: '', author: ''}});
+        this.setState({ newcomment: { content: '', author: '' } });
+        this.loadComments(this.state.post_id);
+    }
+
+    async deleteComment(id) {
+        const response = await fetch(`/api/admin/comment`, {
+            method: "delete",
+            body: JSON.stringify(id),
+            headers: { 'Content-Type': 'application/json' },
+        });
+        console.log(response);
         this.loadComments(this.state.post_id);
     }
 

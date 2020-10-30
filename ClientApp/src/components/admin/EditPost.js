@@ -28,7 +28,7 @@ class EditPostForm extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        await fetch("api/admin/update", {
+        await fetch("api/admin/post", {
             method: 'PUT',
             body: JSON.stringify(this.state.post),
             headers: { 'Content-Type': 'application/json' },
@@ -37,7 +37,7 @@ class EditPostForm extends React.Component {
     }
 
     handleDelete(event) {
-        fetch("api/admin/delete", {
+        fetch("api/admin/post", {
             method: 'DELETE',
             body: JSON.stringify(this.state.post.id),
             headers: { 'Content-Type': 'application/json' },
