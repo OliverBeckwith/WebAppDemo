@@ -6,8 +6,12 @@ export class AdminHome extends Component {
   render () {
     return (
       <div>
-        <h2>Admin Area</h2>
-        <p>This area requires Authentication to access</p>
+        <h2>Administration</h2>
+        <p>Within this area you can now:</p>
+        <ul>
+          <li><a href='/admin/post/new'>Create a New Post</a> and <code>Edit</code> posts from the Posts page</li>
+          <li><a href='/admin/createadmin'>Create more Admins</a></li>
+        </ul>
       </div>
     );
   }
