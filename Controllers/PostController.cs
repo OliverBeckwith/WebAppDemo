@@ -44,6 +44,14 @@ namespace WebAppDemo.Controllers
             return comments.ToArray();
         }
 
+        [HttpGet]
+        [Route("{post_id}/commentcount")]
+        public async Task<int> GetCommentCount(int post_id){
+            string sql = $"SELECT Count(id) FROM comments WHERE post_id=={post_id}";
+            int count = await _dataAccess.GetFirstOrDefault<int>(sql);
+            return count;
+        }
+
         [HttpPost]
         [Route("{post_id}/newcomment")]
         public async Task<IActionResult> InsertComment(int post_id, [FromBody] Comment comment)
