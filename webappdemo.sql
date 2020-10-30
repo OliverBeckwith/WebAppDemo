@@ -1,12 +1,20 @@
 DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS admins;
 
 CREATE TABLE posts (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title VARCHAR(255),
+	title VARCHAR(255),
+	content VARCHAR(255),
+	posted DATETIME DEFAULT(datetime('now'))
+);
+
+CREATE TABLE comments (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	post_id INTEGER NOT NULL,
 	content TEXT,
-	posted DATETIME DEFAULT(datetime('now')),
-    author VARCHAR(255)
+	author VARCHAR(255),
+    FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
 CREATE TABLE admins (

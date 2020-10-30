@@ -7,8 +7,7 @@ export class NewPost extends React.Component {
             successful: false,
             post: {
                 title: '',
-                content: '',
-                author: ''
+                content: ''
             }
         };
 
@@ -50,9 +49,6 @@ export class NewPost extends React.Component {
 
                         <label>Content:</label>
                         <input type="text" name="content" value={this.state.content} onChange={this.handleChange} />
-
-                        <label>Author:</label>
-                        <input type="text" name="author" value={this.state.author} onChange={this.handleChange} />
 
                         <input type="submit" value="Submit" />
                     </form>

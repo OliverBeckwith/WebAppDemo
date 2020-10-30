@@ -46,10 +46,9 @@ export class Posts extends React.Component {
                     <tr key={post.id}>
                         <td>{new Date(post.posted).toLocaleString()}</td>
                         <td>{this.truncate(post.title, 25)}</td>
-                        <td>{this.truncate(post.author, 25)}</td>
                         <td>{this.truncate(post.content, 25)}</td>
                         {this.state.admin
-                            ? <td><a href={"/admin/edit/" + post.id}>Edit</a></td>
+                            ? <td><a href={"/admin/post/edit/" + post.id}>Edit</a></td>
                             : ""
                         }
                     </tr>
@@ -69,7 +68,6 @@ export class Posts extends React.Component {
                             <tr>
                                 <th>Time Posted</th>
                                 <th>Title</th>
-                                <th>Author</th>
                                 <th>Content</th>
                             </tr>
                         </thead>

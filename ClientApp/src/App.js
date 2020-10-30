@@ -48,7 +48,7 @@ export default class App extends Component {
                 <Route exact path={`${url}/`} component={AdminHome} />
                 <Route path={`${url}/createadmin`} component={CreateAdmin} />
                 <Route path={`${url}/post/new`} component={NewPost} />
-                <Route path={`${url}/edit/:id`} component={EditPost} />
+                <Route path={`${url}/post/edit/:id`} component={EditPost} />
                 <Route path={`${url}/logout`} render={() => {
                   return <Loader
                     toAwait={() => { fetch('/api/admin/logout', { method: "POST", credentials: "include" }) }}
