@@ -14,6 +14,7 @@ CREATE TABLE comments (
 	post_id INTEGER NOT NULL,
 	content TEXT,
 	author VARCHAR(255),
+	commented DATETIME DEFAULT(datetime('now')),
     FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
