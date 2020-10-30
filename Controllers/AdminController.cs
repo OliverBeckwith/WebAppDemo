@@ -107,7 +107,7 @@ namespace WebAppDemo.Controllers
         public async Task<IActionResult> UpdatePost(Post post)
         {
             string sql = "UPDATE posts set "
-                + $"title='{post.title}', content='{post.content}',author='{post.author}',modified=datetime('now') "
+                + $"title='{post.title}', content='{post.content}',modified=datetime('now') "
                 + $"WHERE id=={post.id}";
             int affected = await _dataAccess.Set(sql);
             return Ok(affected);

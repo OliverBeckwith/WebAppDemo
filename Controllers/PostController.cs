@@ -35,12 +35,21 @@ namespace WebAppDemo.Controllers
             return post;
         }
 
+        [HttpGet]
+        [Route("{postid}/comments")]
+        public async Task<Comment[]> GetComments(int postid)
+        {
+            string sql = $"SELECT * FROM comments WHERE postid=={postid} ORDER BY commented DESC";
+            var comments = await _dataAccess.Get<Comment>(sql);
+            return comments.ToArray();
+        }
+
         [HttpPost]
         [Route("new")]
         public async Task<IActionResult> InsertPost([FromBody] Post post)
         {
-            string sql = "INSERT INTO posts (title,content,author,posted) "
-                + $"VALUES ('{post.title}','{post.content}','{post.author}',datetime('now'))";
+            string sql = "INSERT INTO posts (title,content,posted) "
+                + $"VALUES ('{post.title}','{post.content}',datetime('now'))";
             int affected = await _dataAccess.Set(sql);
             return Ok(affected);
         }

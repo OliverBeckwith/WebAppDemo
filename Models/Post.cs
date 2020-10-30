@@ -9,6 +9,5 @@ namespace WebAppDemo.Models
         public DateTime posted { get; set; }
         public string title { get; set; }
         public string content { get; set; }
-        public string author { get; set; }
     }
 }
