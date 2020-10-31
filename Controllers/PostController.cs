@@ -21,8 +21,10 @@ namespace WebAppDemo.Controllers
         [HttpGet]
         public async Task<List<Post>> GetPosts()
         {
-            string sql = "SELECT posts.*, Count(comments.id) as `comment_count` "
-                    + "FROM posts INNER JOIN comments ON posts.id==comments.post_id";
+            string sql = "SELECT posts.*, counts.count as `comment_count` FROM posts "
+                + "LEFT OUTER JOIN ( "
+                    + "SELECT Count(post_id) as `count` FROM comments "
+                + ") as counts ON posts.id==counts.count";
             List<Post> posts = await _dataAccess.Get<Post>(sql);
             return posts;
         }

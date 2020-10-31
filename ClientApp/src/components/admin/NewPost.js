@@ -23,11 +23,12 @@ export class NewPost extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        await fetch("api/posts/new", {
+        const response = await fetch("api/posts/new", {
             method: 'POST',
             body: JSON.stringify(this.state.post),
             headers: { 'Content-Type': 'application/json' },
         });
+        console.log(response);
         this.setState({ successful: true });
     }
 
