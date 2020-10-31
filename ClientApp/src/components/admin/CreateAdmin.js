@@ -58,7 +58,7 @@ export class CreateAdmin extends React.Component {
             body = (
                 <div>
                     <p>Your unique id is {this.state.id}</p>
-                    <em style={{ color="red" }}>Remember this id or you won't be able to log in!</em>
+                    <em style={{ color: "red" }}>Remember this id or you won't be able to log in!</em>
                 </div>
             );
         }
