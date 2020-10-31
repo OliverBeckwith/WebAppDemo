@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Row, Col } from 'reactstrap';
 
 export class NewPost extends React.Component {
     constructor(props) {
@@ -45,13 +46,25 @@ export class NewPost extends React.Component {
             body = (
                 <div>
                     <form method="POST" onSubmit={this.handleSubmit}>
-                        <label>Title:</label>
-                        <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
-
-                        <label>Content:</label>
-                        <input type="text" name="content" value={this.state.content} onChange={this.handleChange} />
-
-                        <input type="submit" value="Submit" />
+                        <Row>
+                            <Col sm="2">
+                                <label>Title:</label>
+                            </Col>
+                            <Col sm="6">
+                                <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm="2">
+                                <label>Content:</label>
+                            </Col>
+                            <Col sm="6">
+                                <input type="text" name="content" value={this.state.content} onChange={this.handleChange} />
+                            </Col>
+                        </Row>
+                        <Row><Col sm="auto">
+                            <input type="submit" value="Post" />
+                        </Col></Row>
                     </form>
                 </div>
             );

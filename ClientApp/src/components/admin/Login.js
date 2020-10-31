@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Loader } from '../Loader';
 import { Redirect } from 'react-router-dom';
 import { hash_sha512 } from "../../core";
+import { Row, Col } from 'reactstrap';
 
 export class Login extends React.Component {
 
@@ -42,17 +43,30 @@ export class Login extends React.Component {
 
     render() {
         if (this.state.success) {
-            return <Loader onLoadGoto="/admin" refresh={true}/>
+            return <Loader onLoadGoto="/admin" refresh={true} />
         }
 
         let body = (
             <form method="POST" onSubmit={this.handleSubmit}>
-                <label>ID: </label>
-                <input name="id" value={this.state.id} onChange={this.handleChange} />
-
-                <label>Password: </label>
-                <input name="password" type="password" value={this.state.password} onChange={this.handleChange} />
-                <input type="submit" value="Login" />
+                <Row>
+                    <Col sm="2">
+                        <label>ID: </label>
+                    </Col>
+                    <Col sm="6">
+                        <input style={{ width: "100%" }} name="id" value={this.state.id} onChange={this.handleChange} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col sm="2">
+                        <label>Password: </label>
+                    </Col>
+                    <Col sm="6">
+                        <input name="password" type="password" value={this.state.password} onChange={this.handleChange} />
+                    </Col>
+                </Row>
+                <Row><Col sm="auto">
+                    <input type="submit" value="Login" />
+                </Col></Row>
             </form>
         );
 

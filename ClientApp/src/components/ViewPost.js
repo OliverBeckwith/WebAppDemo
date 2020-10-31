@@ -61,7 +61,6 @@ class Post extends React.Component {
             );
         }
         else {
-            console.log(this.state.post);
             return (
                 <div>
                     <h2 className="post-title">{this.state.post.title}</h2>
@@ -99,9 +98,8 @@ class Post extends React.Component {
                 existing = (
                     <div>
                         {this.state.comments.map(comment =>
-                            <div>
-                                <Row key={comment.id} style={{ marginBottom: "2px", marginTop: "2px" }}>
-
+                            <div key={comment.id}>
+                                <Row>
                                     <Col sm="2" className="comment-author">
                                         <strong>{comment.author}</strong>
                                     </Col>
@@ -118,7 +116,6 @@ class Post extends React.Component {
                                         : null
                                     }
                                 </Row>
-                                <hr />
                             </div>
                         )}
                     </div>
@@ -135,24 +132,27 @@ class Post extends React.Component {
                 <div>
                     <h4>Comments</h4>
                     {existing}
+                    <hr />
                     <h4>Leave a Comment</h4>
                     <form method="post" onSubmit={this.handleCommentSubmit}>
                         <Row>
                             <Col sm="2">
                                 <label>Display Name: </label>
                             </Col>
-                            <Col sm="10">
+                            <Col sm="6">
                                 <input name="author" value={this.state.newcomment.author} onChange={this.handleCommentChange} />
                             </Col>
                         </Row>
                         <Row>
                             <Col sm="2" >
                                 <label>Comment: </label></Col>
-                            <Col sm="10">
+                            <Col sm="6">
                                 <input name="content" value={this.state.newcomment.content} onChange={this.handleCommentChange} />
                             </Col>
                         </Row>
-                        <Row><Col><input type="submit" value="Submit" /></Col></Row>
+                        <Row><Col sm="auto">
+                            <input type="submit" value="Submit" />
+                        </Col></Row>
                     </form>
                 </div>
 
@@ -175,7 +175,6 @@ class Post extends React.Component {
             body: JSON.stringify(this.state.newcomment),
             headers: { 'Content-Type': 'application/json' },
         });
-        console.log(response);
         this.setState({ newcomment: { content: '', author: '' } });
         this.loadComments(this.state.post_id);
     }
@@ -186,7 +185,6 @@ class Post extends React.Component {
             body: JSON.stringify(id),
             headers: { 'Content-Type': 'application/json' },
         });
-        console.log(response);
         this.loadComments(this.state.post_id);
     }
 

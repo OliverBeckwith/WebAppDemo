@@ -61,3 +61,12 @@ code {
   text-align: center;
   align-self: center;
 }
+
+.row {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+[class^="col"] input {
+  width: inherit;
+}

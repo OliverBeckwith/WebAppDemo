@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { useParams } from 'react-router-dom';
 import { loadPost } from '../../core';
+import { Row, Col } from 'reactstrap';
 
 export function EditPost(props) {
 
@@ -29,10 +30,9 @@ class EditPostForm extends React.Component {
         this.getPost(props.id)
     }
 
-    async getPost(id)
-    {
+    async getPost(id) {
         const post = await loadPost(id);
-        this.setState({post: post});
+        this.setState({ post: post });
     }
 
     handleChange(event) {
@@ -80,15 +80,33 @@ class EditPostForm extends React.Component {
             body = (
                 <div>
                     <form method="POST" onSubmit={this.handleSubmit}>
-                        <label>Title:</label>
-                        <input type="text" name="title" value={this.state.post.title} onChange={this.handleChange} />
-
-                        <label>Content:</label>
-                        <input type="text" name="content" value={this.state.post.content} onChange={this.handleChange} />
-
-                        <input type="submit" value="Submit" />
+                        <Row>
+                            <Col sm="2">
+                                <label>Title:</label>
+                            </Col>
+                            <Col sm="6">
+                                <input type="text" name="title" value={this.state.post.title} onChange={this.handleChange} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm="2">
+                                <label>Content:</label>
+                            </Col>
+                            <Col sm="6">
+                                <input type="text" name="content" value={this.state.post.content} onChange={this.handleChange} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm="auto">
+                                <input type="submit" value="Post" />
+                            </Col>
+                            <Col sm="auto">
+                                <a href='#' onClick={(e) => { e.preventDefault(); this.handleDelete() }}>
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </Col>
+                        </Row>
                     </form>
-                    <button>Delete</button>
                 </div>
             );
         }
