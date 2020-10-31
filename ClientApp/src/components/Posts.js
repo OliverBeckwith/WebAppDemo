@@ -42,13 +42,13 @@ export class Posts extends React.Component {
             let posts;
             if (this.state.posts && this.state.posts.length > 0) {
                 posts = this.state.posts.map(post =>
-                    <tr key={post.id}>
+                    <tr className="postlist-row" onClick={() => {window.location = `/post/${post.id}`}} key={post.id}>
                         <td>{new Date(post.posted).toLocaleString()}</td>
                         <td>{this.truncate(post.title, 25)}</td>
                         <td>{this.truncate(post.content, 25)}</td>
                         <td><a href={`/post/${post.id}`}>View</a></td>
                         {this.state.admin
-                            ? <td><a href={"/admin/post/edit/" + post.id}>Edit</a></td>
+                            ? <td><a href={"/admin/post/edit/" + post.id}><i class="fas fa-edit"></i></a></td>
                             : ""
                         }
                     </tr>
@@ -62,7 +62,7 @@ export class Posts extends React.Component {
 
             body = (
                 <div>
-                    <table className='table table-striped'>
+                    <table className='table'>
                         <thead>
                             <tr>
                                 <th>Time Posted</th>

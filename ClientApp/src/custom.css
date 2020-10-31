@@ -21,7 +21,11 @@ code {
   border-color: #1861ac;
 }
 
-.post-title {
+.postlist-row {
+  cursor: pointer;
+}
+.postlist-row:hover {
+  background-color: gainsboro;
 }
 
 .post-date {
