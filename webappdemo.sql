@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS admins;
 CREATE TABLE posts (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	title VARCHAR(255),
-	content VARCHAR(255),
+	content TEXT,
 	posted DATETIME DEFAULT(datetime('now')),
 	modified DATETIME DEFAULT(datetime('now'))
 );
