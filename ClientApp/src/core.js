@@ -1,5 +1,11 @@
 var crypto = require('crypto');
 
+export function truncate(string, length, extra_string = "") {
+    return string.length > length
+        ? string.substring(0, length) + extra_string
+        : string;
+}
+
 export async function loadPosts() {
     const response = await fetch("api/posts");
     const posts = await response.json();
@@ -7,7 +13,7 @@ export async function loadPosts() {
 }
 
 export async function loadPost(id) {
-    const response = await fetch("api/posts/"+id);
+    const response = await fetch("api/posts/" + id);
     const post = await response.json();
     return post;
 }

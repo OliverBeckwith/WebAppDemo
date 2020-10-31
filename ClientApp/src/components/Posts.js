@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { checkAdmin } from "../core";
+import { checkAdmin, truncate } from "../core";
 
 export class Posts extends React.Component {
 
@@ -21,12 +21,6 @@ export class Posts extends React.Component {
         this.setState({ admin: isAdmin });
     }
 
-    truncate(text, length) {
-        return text.length > length
-            ? text.substring(0, length) + "..."
-            : text;
-    }
-
     render() {
 
         let body;
@@ -44,8 +38,8 @@ export class Posts extends React.Component {
                 posts = this.state.posts.map(post =>
                     <tr className="postlist-row" onClick={() => { window.location = `/post/${post.id}` }} key={post.id}>
                         <td>{new Date(post.posted).toLocaleString()}</td>
-                        <td>{this.truncate(post.title, 25)}</td>
-                        <td>{this.truncate(post.content, 25)}</td>
+                        <td>{truncate(post.title, 25, "...")}</td>
+                        <td>{truncate(post.content, 25, "...")}</td>
                         <td>{post.comment_count}</td>
                         {this.state.admin
                             ? <td><a href={"/admin/post/edit/" + post.id}><i class="fas fa-edit"></i></a></td>
