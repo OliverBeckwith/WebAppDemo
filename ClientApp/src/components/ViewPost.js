@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { useParams } from "react-router-dom";
-import { checkAdmin, loadPost } from "../core";
+import { checkAdmin, loadPost, truncate } from "../core";
 import { Col, Row } from 'reactstrap';
 
 export function ViewPost() {
@@ -137,17 +137,17 @@ class Post extends React.Component {
                     <form method="post" onSubmit={this.handleCommentSubmit}>
                         <Row>
                             <Col sm="2">
-                                <label>Display Name: </label>
+                                <label>Display Name:</label>
                             </Col>
                             <Col sm="6">
-                                <input name="author" value={this.state.newcomment.author} onChange={this.handleCommentChange} />
+                                <input name="author" value={truncate(this.state.newcomment.author,25)} onChange={this.handleCommentChange} />
                             </Col>
                         </Row>
                         <Row>
                             <Col sm="2" >
-                                <label>Comment: </label></Col>
+                                <label>Comment:</label></Col>
                             <Col sm="6">
-                                <input name="content" value={this.state.newcomment.content} onChange={this.handleCommentChange} />
+                                <textarea name="content" value={truncate(this.state.newcomment.content,400)} onChange={this.handleCommentChange} />
                             </Col>
                         </Row>
                         <Row><Col sm="auto">
