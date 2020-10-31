@@ -59,7 +59,7 @@ export class NewPost extends React.Component {
                                 <label>Content:</label>
                             </Col>
                             <Col sm="6">
-                                <input type="text" name="content" value={this.state.content} onChange={this.handleChange} />
+                                <textarea name="content" value={this.state.content} onChange={this.handleChange} />
                             </Col>
                         </Row>
                         <Row><Col sm="auto">

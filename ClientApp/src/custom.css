@@ -67,6 +67,7 @@ code {
   margin-bottom: 0.5rem;
 }
 
-[class^="col"] input {
+[class^="col"] input,
+[class^="col"] textarea {
   width: inherit;
 }
