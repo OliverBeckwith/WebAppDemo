@@ -10,5 +10,7 @@ namespace WebAppDemo.Models
         public DateTime modified { get; set; }
         public string title { get; set; }
         public string content { get; set; }
+
+        public int comment_count { get; set; }
     }
 }

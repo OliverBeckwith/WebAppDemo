@@ -21,7 +21,8 @@ namespace WebAppDemo.Controllers
         [HttpGet]
         public async Task<List<Post>> GetPosts()
         {
-            string sql = "SELECT * FROM posts";
+            string sql = "SELECT posts.*, Count(comments.id) as `comment_count` "
+                    + "FROM posts INNER JOIN comments ON posts.id==comments.post_id";
             List<Post> posts = await _dataAccess.Get<Post>(sql);
             return posts;
         }
@@ -42,14 +43,6 @@ namespace WebAppDemo.Controllers
             string sql = $"SELECT * FROM comments WHERE post_id=={post_id} ORDER BY commented ASC";
             var comments = await _dataAccess.Get<Comment>(sql);
             return comments.ToArray();
-        }
-
-        [HttpGet]
-        [Route("{post_id}/commentcount")]
-        public async Task<int> GetCommentCount(int post_id){
-            string sql = $"SELECT Count(id) FROM comments WHERE post_id=={post_id}";
-            int count = await _dataAccess.GetFirstOrDefault<int>(sql);
-            return count;
         }
 
         [HttpPost]

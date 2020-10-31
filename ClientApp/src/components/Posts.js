@@ -11,7 +11,7 @@ export class Posts extends React.Component {
     }
 
     async getPosts() {
-        const response = await fetch("api/posts");
+        let response = await fetch("api/posts");
         const posts = await response.json();
         this.setState({ loading: false, posts: posts });
     }
@@ -42,11 +42,11 @@ export class Posts extends React.Component {
             let posts;
             if (this.state.posts && this.state.posts.length > 0) {
                 posts = this.state.posts.map(post =>
-                    <tr className="postlist-row" onClick={() => {window.location = `/post/${post.id}`}} key={post.id}>
+                    <tr className="postlist-row" onClick={() => { window.location = `/post/${post.id}` }} key={post.id}>
                         <td>{new Date(post.posted).toLocaleString()}</td>
                         <td>{this.truncate(post.title, 25)}</td>
                         <td>{this.truncate(post.content, 25)}</td>
-                        <td><a href={`/post/${post.id}`}>View</a></td>
+                        <td>{post.comment_count}</td>
                         {this.state.admin
                             ? <td><a href={"/admin/post/edit/" + post.id}><i class="fas fa-edit"></i></a></td>
                             : ""
@@ -68,7 +68,7 @@ export class Posts extends React.Component {
                                 <th>Time Posted</th>
                                 <th>Title</th>
                                 <th>Content</th>
-                                <th></th>
+                                <th>Comments</th>
                             </tr>
                         </thead>
                         <tbody>
