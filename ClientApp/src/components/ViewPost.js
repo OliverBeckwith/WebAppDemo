@@ -63,7 +63,19 @@ class Post extends React.Component {
         else {
             return (
                 <div>
-                    <h2 className="post-title">{this.state.post.title}</h2>
+                    <Row>
+                        <Col xs="auto">
+                            <h2 className="post-title">{this.state.post.title}</h2>
+                        </Col>
+                        {this.state.admin
+                            ? (<Col xs="auto">
+                                <a href={`/admin/post/edit/${this.props.id}`}>
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </Col>)
+                            : null
+                        }
+                    </Row>
                     <Row className="post-date">
                         <Col sm="auto"><em>
                             Posted at: {new Date(this.state.post.posted).toLocaleString()}
@@ -73,12 +85,10 @@ class Post extends React.Component {
                                 ? `Last modified at: ${new Date(this.state.post.modified).toLocaleString()}`
                                 : null}
                         </em></Col>
+
                     </Row>
                     <p className="post-content">{this.state.post.content}</p>
-                    {this.state.admin
-                        ? <a href={`/admin/post/edit/${this.props.id}`}>Edit this post</a>
-                        : ""
-                    }
+
                 </div>
             );
         }
@@ -110,9 +120,11 @@ class Post extends React.Component {
                                         <em>{new Date(comment.commented).toLocaleString().replace(",", "")}</em>
                                     </Col>
                                     {this.state.admin
-                                        ? <Col xs="6" sm="1" style={{ textAlign: "end" }}><a href='#' onClick={(e) => { e.preventDefault(); this.deleteComment(comment.id) }}>
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a></Col>
+                                        ? (<Col xs="6" sm="1" style={{ textAlign: "end", alignSelf: "center" }}>
+                                            <a href='#' onClick={(e) => { e.preventDefault(); this.deleteComment(comment.id) }}>
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </Col>)
                                         : null
                                     }
                                 </Row>
@@ -140,14 +152,14 @@ class Post extends React.Component {
                                 <label>Display Name:</label>
                             </Col>
                             <Col sm="6">
-                                <input name="author" value={truncate(this.state.newcomment.author,25)} onChange={this.handleCommentChange} />
+                                <input name="author" value={truncate(this.state.newcomment.author, 25)} onChange={this.handleCommentChange} />
                             </Col>
                         </Row>
                         <Row>
                             <Col sm="2" >
                                 <label>Comment:</label></Col>
                             <Col sm="6">
-                                <textarea name="content" value={truncate(this.state.newcomment.content,400)} onChange={this.handleCommentChange} />
+                                <textarea name="content" value={truncate(this.state.newcomment.content, 400)} onChange={this.handleCommentChange} />
                             </Col>
                         </Row>
                         <Row><Col sm="auto">
