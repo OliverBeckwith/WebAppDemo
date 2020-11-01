@@ -7,7 +7,7 @@ Built upon a stripped "Asp.Net Core with React" template as described [here](htt
 ---
 
 ## App Features
-A simple forum app that allows admins to create posts that anyone can comment on. 
+A simple forum app that allows admins to create posts that anyone can comment on. The client-side app is made through React and uses Reactstrap to allow all sizes of display to have a comfortable experience.
  - Admin
    - /admin/ pages only accessible to admins
    - Login with id and password
