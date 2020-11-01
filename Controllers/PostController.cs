@@ -24,7 +24,8 @@ namespace WebAppDemo.Controllers
             string sql = "SELECT posts.*, counts.count as `comment_count` FROM posts "
                 + "LEFT OUTER JOIN ("
                     + "SELECT post_id, Count(post_id) as `count` FROM comments GROUP BY post_id"
-                + ") as counts ON posts.id==counts.post_id";
+                + ") as counts ON posts.id==counts.post_id "
+                + "ORDER BY posts.posted DESC";
             List<Post> posts = await _dataAccess.Get<Post>(sql);
             return posts;
         }
