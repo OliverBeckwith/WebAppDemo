@@ -42,7 +42,7 @@ export class Posts extends React.Component {
                         <td>{truncate(post.content, 25, "...")}</td>
                         <td>{post.comment_count}</td>
                         {this.state.admin
-                            ? <td><a href={"/admin/post/edit/" + post.id}><i class="fas fa-edit"></i></a></td>
+                            ? <td><a href={"/admin/post/edit/" + post.id}><i className="fas fa-edit"></i></a></td>
                             : ""
                         }
                     </tr>

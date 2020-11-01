@@ -70,7 +70,7 @@ class Post extends React.Component {
                         {this.state.admin
                             ? (<Col xs="auto">
                                 <a href={`/admin/post/edit/${this.props.id}`}>
-                                    <i class="fas fa-edit"></i>
+                                    <i className="fas fa-edit"></i>
                                 </a>
                             </Col>)
                             : null
@@ -122,7 +122,7 @@ class Post extends React.Component {
                                     {this.state.admin
                                         ? (<Col xs="6" sm="1" style={{ textAlign: "end", alignSelf: "center" }}>
                                             <a href='#' onClick={(e) => { e.preventDefault(); this.deleteComment(comment.id) }}>
-                                                <i class="fas fa-trash-alt"></i>
+                                                <i className="fas fa-trash-alt"></i>
                                             </a>
                                         </Col>)
                                         : null
@@ -174,9 +174,7 @@ class Post extends React.Component {
 
     handleCommentChange(e) {
         let newcomment = this.state.newcomment;
-        newcomment[e.target.name] = e.target.name == "author" && e.target.value.length > 20
-            ? e.target.value.substring(0, 20)
-            : e.target.value;
+        newcomment[e.target.name] = e.target.value;
         this.setState({ newcomment: newcomment });
     }
 
@@ -187,6 +185,7 @@ class Post extends React.Component {
             body: JSON.stringify(this.state.newcomment),
             headers: { 'Content-Type': 'application/json' },
         });
+        console.log(response);
         this.setState({ newcomment: { content: '', author: '' } });
         this.loadComments(this.state.post_id);
     }
