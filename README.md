@@ -19,7 +19,7 @@ A simple forum app that allows admins to create posts that anyone can comment on
    - Delete comments on posts
  - Public
    - View posts and navigate to individual post pages
-   - Leave comments on posts
+   - Leave comments on posts (25 character limit for names and 400 character limit for comments)
 
 ## Backend Features
 The backend is an ASP.NET Core API using appropriate routing and authentication to perform data access. Makes use of both custom routing and request methods ("GET", "POST", etc.)
