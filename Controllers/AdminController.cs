@@ -112,6 +112,21 @@ namespace WebAppDemo.Controllers
             return Ok(id);
         }
 
+        [HttpPost]
+        [Route("post")]
+        public async Task<IActionResult> InsertPost([FromBody] Post post)
+        {
+            var parameters = new
+            {
+                title = post.title,
+                content = post.content
+            };
+            string sql = "INSERT INTO posts (title,content) "
+                + "VALUES (@title,@content)";
+            int affected = await _dataAccess.Set(sql, parameters);
+            return Ok(affected);
+        }
+
         [HttpPut]
         [Route("post")]
         public async Task<IActionResult> UpdatePost([FromBody] Post post)

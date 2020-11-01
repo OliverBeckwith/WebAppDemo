@@ -24,7 +24,7 @@ export class NewPost extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        const response = await fetch("api/posts/new", {
+        const response = await fetch("api/admin/post", {
             method: 'POST',
             body: JSON.stringify(this.state.post),
             headers: { 'Content-Type': 'application/json' },

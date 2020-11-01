@@ -62,20 +62,5 @@ namespace WebAppDemo.Controllers
             int affected = await _dataAccess.Set(sql, parameters);
             return Ok(affected);
         }
-
-        [HttpPost]
-        [Route("new")]
-        public async Task<IActionResult> InsertPost([FromBody] Post post)
-        {
-            var parameters = new
-            {
-                title = post.title,
-                content = post.content
-            };
-            string sql = "INSERT INTO posts (title,content) "
-                + "VALUES (@title,@content)";
-            int affected = await _dataAccess.Set(sql, parameters);
-            return Ok(affected);
-        }
     }
 }
