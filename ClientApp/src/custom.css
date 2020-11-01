@@ -33,8 +33,11 @@ code {
   font-size: x-small;
 }
 
-.comment-content {
+.post-content {
   white-space: pre-wrap;
+}
+
+.comment-content {
   align-self: center;
   border-radius: 4px 16px 16px 16px;
   background-color: gainsboro;
