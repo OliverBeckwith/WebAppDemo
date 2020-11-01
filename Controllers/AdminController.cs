@@ -46,18 +46,23 @@ namespace WebAppDemo.Controllers
         [Route("salt/{id}")]
         public async Task<string> GetUserSalt(int id)
         {
-            string sql = $"SELECT salt FROM admins WHERE id=={id} LIMIT 1";
-            string salt = await _dataAccess.GetFirstOrDefault<string>(sql);
+            string sql = "SELECT salt FROM admins WHERE id==@id LIMIT 1";
+            string salt = await _dataAccess.GetFirstOrDefault<string>(sql, new { id = id });
             return salt;
         }
 
         [HttpPost]
         [AllowAnonymous]
         [Route("login/{id}")]
-        public async Task<IActionResult> Login(int id, [FromBody] string hashedpassword)
+        public async Task<IActionResult> Login(int id, [FromBody] string hashed_password)
         {
-            string sql = $"SELECT COUNT(id) FROM admins WHERE id=={id} AND `password`=='{hashedpassword}' LIMIT 1";
-            bool correct = await _dataAccess.GetFirstOrDefault<bool>(sql);
+            var parameters = new
+            {
+                id = id,
+                hashed_password = hashed_password
+            };
+            string sql = "SELECT COUNT(id) FROM admins WHERE id==@id AND `password`==@hashed_password LIMIT 1";
+            bool correct = await _dataAccess.GetFirstOrDefault<bool>(sql, parameters);
 
             if (!correct)
                 return Problem("Invalid id and password combination.");
@@ -89,16 +94,21 @@ namespace WebAppDemo.Controllers
             if (data.hashed_password == null || data.salt == null)
                 return Problem();
 
+            var parameters = new
+            {
+                hashed_password = data.hashed_password,
+                salt = data.salt
+            };
             string sql = "INSERT INTO admins (`password`, salt) "
-                + $"VALUES ('{data.hashed_password}','{data.salt}')";
-            int affected = await _dataAccess.Set(sql);
+                + "VALUES (@hashed_password,@salt)";
+            int affected = await _dataAccess.Set(sql, parameters);
             if (affected <= 0)
                 return Problem();
 
             sql = "SELECT id FROM admins "
-                + $"WHERE `password`=='{data.hashed_password}' "
-                + $"AND salt=='{data.salt}' LIMIT 1";
-            int id = await _dataAccess.GetFirstOrDefault<int>(sql);
+                + "WHERE `password`==@hashed_password "
+                + "AND salt==@salt LIMIT 1";
+            int id = await _dataAccess.GetFirstOrDefault<int>(sql, parameters);
             return Ok(id);
         }
 
@@ -106,10 +116,16 @@ namespace WebAppDemo.Controllers
         [Route("post")]
         public async Task<IActionResult> UpdatePost([FromBody] Post post)
         {
+            var parameters = new
+            {
+                title = post.title,
+                content = post.content,
+                id = post.id
+            };
             string sql = "UPDATE posts SET "
-                + $"title='{post.title}', content='{post.content}', modified=datetime('now') "
-                + $"WHERE id=={post.id}";
-            int affected = await _dataAccess.Set(sql);
+                + "title=@title, content=@content, modified=datetime('now') "
+                + "WHERE id==@id";
+            int affected = await _dataAccess.Set(sql, parameters);
             return Ok(affected);
         }
 
@@ -117,8 +133,8 @@ namespace WebAppDemo.Controllers
         [Route("post")]
         public async Task<IActionResult> DeletePost([FromBody] int id)
         {
-            string sql = $"DELETE FROM posts WHERE id=={id}";
-            int affected = await _dataAccess.Set(sql);
+            string sql = "DELETE FROM posts WHERE id==@id";
+            int affected = await _dataAccess.Set(sql, new { id = id });
             return Ok(affected);
         }
 
@@ -126,8 +142,8 @@ namespace WebAppDemo.Controllers
         [Route("comment")]
         public async Task<IActionResult> DeleteComment([FromBody] int id)
         {
-            string sql = $"DELETE FROM comments WHERE id=={id}";
-            int affected = await _dataAccess.Set(sql);
+            string sql = "DELETE FROM comments WHERE id==@id";
+            int affected = await _dataAccess.Set(sql, new { id = id });
             return Ok(affected);
         }
     }

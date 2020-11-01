@@ -33,8 +33,8 @@ namespace WebAppDemo.Controllers
         [Route("{id}")]
         public async Task<Post> GetPost(int id)
         {
-            string sql = $"SELECT * FROM posts WHERE id=={id} LIMIT 1";
-            Post post = await _dataAccess.GetFirstOrDefault<Post>(sql);
+            string sql = "SELECT * FROM posts WHERE id==@id LIMIT 1";
+            Post post = await _dataAccess.GetFirstOrDefault<Post>(sql, new { id = id });
             return post;
         }
 
@@ -42,8 +42,8 @@ namespace WebAppDemo.Controllers
         [Route("{post_id}/comments")]
         public async Task<Comment[]> GetComments(int post_id)
         {
-            string sql = $"SELECT * FROM comments WHERE post_id=={post_id} ORDER BY commented ASC";
-            var comments = await _dataAccess.Get<Comment>(sql);
+            string sql = "SELECT * FROM comments WHERE post_id==@post_id ORDER BY commented ASC";
+            var comments = await _dataAccess.Get<Comment>(sql, new { post_id = post_id });
             return comments.ToArray();
         }
 
@@ -51,9 +51,15 @@ namespace WebAppDemo.Controllers
         [Route("{post_id}/newcomment")]
         public async Task<IActionResult> InsertComment(int post_id, [FromBody] Comment comment)
         {
+            var parameters = new
+            {
+                post_id = post_id,
+                content = comment.content,
+                author = comment.author
+            };
             string sql = "INSERT INTO comments (post_id, content, author) "
-                + $"VALUES ({post_id},'{comment.content}','{comment.author}')";
-            int affected = await _dataAccess.Set(sql);
+                + "VALUES (@post_id,@content,@author)";
+            int affected = await _dataAccess.Set(sql, parameters);
             return Ok(affected);
         }
 
@@ -61,9 +67,14 @@ namespace WebAppDemo.Controllers
         [Route("new")]
         public async Task<IActionResult> InsertPost([FromBody] Post post)
         {
-            string sql = "INSERT INTO posts (title,content,posted) "
-                + $"VALUES ('{post.title}','{post.content}',datetime('now'))";
-            int affected = await _dataAccess.Set(sql);
+            var parameters = new
+            {
+                title = post.title,
+                content = post.content
+            };
+            string sql = "INSERT INTO posts (title,content) "
+                + "VALUES (@title,@content)";
+            int affected = await _dataAccess.Set(sql, parameters);
             return Ok(affected);
         }
     }
